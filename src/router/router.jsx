@@ -20,6 +20,9 @@ import RedirectIfLogin from "../feature/redirect/redirect_if_login";
 import Logout from "../pages/log_out";
 import AdminContextProvider from "../context/admin_context";
 import StoreContextProvider from "../context/storefront_context";
+import ProductCard from "../component/productCard";
+import TransactionContextProvider from "../context/transaction_context";
+import RedirectIfunpaid from "../feature/redirect/redirect_if_unpaid";
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -27,7 +30,6 @@ const router = createBrowserRouter([
       <>
         <RedirectIfLogin>
           <Login />
-          <Footer />
         </RedirectIfLogin>
       </>
     ),
@@ -50,7 +52,6 @@ const router = createBrowserRouter([
     element: (
       <>
         <RegisterFinal />
-        <Footer />
       </>
     ),
   },
@@ -60,7 +61,6 @@ const router = createBrowserRouter([
       <NotLoginRedirect>
         <Header />
         <Outlet />
-        <Footer />
       </NotLoginRedirect>
     ),
     children: [
@@ -69,22 +69,21 @@ const router = createBrowserRouter([
       { path: "/profile/purchase", element: <PurchaseHistory /> },
     ],
   },
-  
+
   {
     path: "/",
     element: (
       <>
-      <StoreContextProvider>
-        <Header />
-        <Outlet />
-        <Footer />
-      </StoreContextProvider>
+        <StoreContextProvider>
+          <Header />
+          <Outlet />
+        </StoreContextProvider>
       </>
     ),
     children: [
       { path: "/", element: <StoreFront /> },
       { path: "/product/:productId", element: <ProductDetail /> },
-      { path: "/explore/:categoryId", element: <Explore /> },
+      { path: "/explore/", element: <Explore /> },
     ],
   },
   {
@@ -92,8 +91,12 @@ const router = createBrowserRouter([
     element: (
       <>
         <NotLoginRedirect>
-          <Outlet />
-          <Footer />
+          <TransactionContextProvider>
+          
+              <Header />
+              <Outlet />
+          
+          </TransactionContextProvider>
         </NotLoginRedirect>
       </>
     ),
@@ -112,6 +115,7 @@ const router = createBrowserRouter([
       </RedirectIfLogin>
     ),
   },
+  { path: "/test", element: <Basket /> },
 ]);
 
 export default function Router() {
